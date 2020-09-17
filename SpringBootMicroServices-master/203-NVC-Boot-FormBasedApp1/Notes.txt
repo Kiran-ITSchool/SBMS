@@ -1,0 +1,130 @@
+
+Topic : Form based applications
+----------------------------------------------
+18-Jun-2020
+----------------------------------------------
+-> In web application we will have several forms
+	
+	Ex : Login, Registration, Forgot Password, Search Form
+
+-> These forms are used to collect data from end user
+
+-> In our web applications we can develop forms using below technolgies
+
+		a) HTML 
+		b) JSP
+		c) JS frameworks
+
+Requirement:
+-------------
+Develop a form with below 4 text fields
+
+	1) Username
+	2) Password
+	3) Email
+	4) Phone Number
+
+Steps to develop First Form Based Application using Spring Boot
+----------------------------------------------------------------
+1) Create Spring Boot starter project with below dependencines
+
+		a)spring-boot-starter-web
+		b)tomact-embed-jasper
+
+2) Create Controller with below methods
+
+		a) loadForm
+		b) handleSubmitBtn
+
+3) Create View Components
+		a) register.jsp (to display form)
+		b) registerSuccess.jsp (to display success msg)
+
+4) Configure below properties in application.yml file
+		a) server port
+		b) view resolver
+		c) context path
+		
+	
+	http://localhost:8081/UserApp 
+		or
+	http://localhost:8081/UserApp/register
+
+-> To capture form data we are using HttpServletRequest object as Controller method parameter
+
+-> Form is binded to POST method, so form data will be sent to server in Request body.
+
+-> To capture form data we are using HttpServletRequest method req.getParameter(String key).
+
+-> To send data from controller to UI we are using Model object
+
+*******************************************************************************
+Today's session : Form Binding Object
+----------------------------------------------
+19-Jun-2020
+-------------------------------------------------
+
+-> We used HTML tags to develop registration form
+
+-> In controller we have 2 methods
+		a)method for loading form (GET)
+		b)method for handling form submission (POST)
+
+-> Once form is submitted, request going to controller method which is binded to given action url in form tag.
+
+	<form action="register" >
+		<fields>
+	</form>
+
+-> action attribute represents "request-handler url-pattern"
+
+-> method attributre represents what type of HTTP request should be sent to server.
+
+-> POST request means form data will go to server in request body
+
+-> If we don't specify method as post, then by default it will be considered as GET request method.
+
+-> If we submit form with GET request then form data will be sent to server as query parameters (we can see the data in url)-security problems will be there.
+
+GET Method Use cases
+--------------------
+-> If we want to send data from Controller to UI then we will bind our controller method to GET Request method.
+
+-> If controller method is expecting sensitive information from client then we will bind our controller method to POST request methods.
+
+-> In post request data wil be sent in request body (which is safe).
+
+-> If we use GET request for form submission below are the challenges
+
+	a)Form data will be sent to serer in URL
+	b)GET req can carry onl 1024 charaterc in URl
+	c)Binary data can't sent to server using GET req
+
+@PostMapping("/register")
+public String handleSubitBtn(HttpServletReq req, Model model){
+	//capturing form data
+
+	//setting data to model
+
+	//returning logical view name
+}
+HttpServletRequest ---> To capture data coming in Request
+
+	String name = req.getParameter("uname");
+
+-> If we have more fields in form then we should write boiler plate code to capture form data.
+
+-> In application we will have several forms and every form will have several fields then we should write lot of boiler plate code in our application.
+
+-> To avoid this boiler plate code, Spring MVC provided Form Bindg OBject mechanism.
+
+----------------------------------------------------
+@PostMapping("/register")
+	public String handleSubmitBtn(User user, Model model) {
+		// Sending Data from Controller to UI
+		String succMsg = "Registration completed successfully..!!";
+		model.addAttribute("msg", succMsg);
+
+		// Returning Logical View Name
+		return "regSuccess";
+	}
